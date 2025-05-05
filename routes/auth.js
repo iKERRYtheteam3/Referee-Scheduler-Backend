@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 const User = require('../models/User');
 
-// @route   POST api/auth/register
 router.post('/register', async (req, res) => {
   const { name, email, password, role } = req.body;
   try {
@@ -28,7 +27,6 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// @route   POST api/auth/login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -49,7 +47,6 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// @route   GET api/auth/me
 router.get('/me', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
