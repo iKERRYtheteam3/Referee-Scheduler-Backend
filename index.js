@@ -6,11 +6,14 @@ require('dotenv').config();
 const app = express();
 connectDB();
 app.use(express.json());
+
+// ✅ Fix CORS: allow frontend domain
 app.use(cors({
   origin: 'https://diamondofficials.com',
   credentials: true
 }));
 
+// Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/games', require('./routes/games'));
 
