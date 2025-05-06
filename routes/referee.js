@@ -1,43 +1,32 @@
 
 const express = require('express');
 const router = express.Router();
+const User = require('../models/User');
+const AdminMessage = require('../models/AdminMessage');
 
-// Temporary in-memory store (replace with DB later)
-let availabilityStore = {};
-let signedUpGames = {};
-
-router.post('/availability', (req, res) => {
-  const { email, available } = req.body;
-  if (!email) return res.status(400).json({ message: 'Email required' });
-
-  availabilityStore[email] = available;
-  res.status(200).json({ message: 'Availability saved.' });
+// Update profile info
+router.post('/profile', async (req, res) => {
+  const { email, name, password } = req.body;
+  try {
+    const updated = await User.findOneAndUpdate(
+      { email },
+      { name, password },
+      { new: true }
+    );
+    res.json({ success: true, updated });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update profile' });
+  }
 });
 
-router.get('/availability', (req, res) => {
-  const email = req.query.email;
-  if (!email) return res.status(400).json({ message: 'Email required' });
-
-  const available = availabilityStore[email];
-  res.status(200).json({ available });
-});
-
-router.post('/signup', (req, res) => {
-  const { email, game } = req.body;
-  if (!email || !game) return res.status(400).json({ message: 'Email and game required' });
-
-  if (!signedUpGames[email]) signedUpGames[email] = [];
-  signedUpGames[email].push(game);
-
-  res.status(200).json({ message: 'Game signed up.' });
-});
-
-router.get('/games', (req, res) => {
-  const email = req.query.email;
-  if (!email) return res.status(400).json({ message: 'Email required' });
-
-  const games = signedUpGames[email] || [];
-  res.status(200).json({ games });
+// Get admin messages
+router.get('/admin-messages', async (req, res) => {
+  try {
+    const messages = await AdminMessage.find().sort({ date: -1 });
+    res.json({ messages });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch admin messages' });
+  }
 });
 
 module.exports = router;
