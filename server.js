@@ -1,3 +1,4 @@
+
 // backend entry point
 
 const express = require('express');
@@ -5,14 +6,25 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
+const authRoutes = require('./routes/auth');
+const dashboardRoutes = require('./routes/dashboard');
+const gameRoutes = require('./routes/games');
+const refereeRoutes = require('./routes/referee');
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Simple test route
+// Simple root route
 app.get('/', (req, res) => {
   res.send('Referee Scheduler API is running!');
 });
+
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/games', gameRoutes);
+app.use('/api/referees', refereeRoutes);
 
 // MongoDB connection
 const PORT = process.env.PORT || 5000;
