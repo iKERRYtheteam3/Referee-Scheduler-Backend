@@ -1,0 +1,16 @@
+.admin-dashboard {
+  padding: 2rem;
+  font-family: sans-serif;
+}
+.admin-dashboard h2 {
+  margin-top: 2rem;
+}
+.admin-dashboard input {
+  display: block;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+}
+.admin-dashboard button {
+  margin-right: 0.5rem;
+  padding: 0.5rem 1rem;
+}
